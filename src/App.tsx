@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+
+import { Students } from "./pages";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div className="App">
-      Hello
+      <Routes>
+        <Route path="/" element={<Students />} />
+      </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
