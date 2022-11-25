@@ -1,44 +1,53 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import Modal from "react-modal";
 import { GrAdd } from "react-icons/gr";
 
-import { API } from "../../services/connection";
 import { Button, Card } from "../../components";
-import { StudentProps } from "../../types";
+import { ContentModal } from "./components/ContentModal";
+import useStudents from "./useStudents";
 
 import * as Style from "./style";
 
 export const Students = () => {
-  const [studentsData, setStudentsData] = useState<StudentProps[]>([]);
+  const { getStudents, studentsData, modalIsOpen, closeModal, openModal } =
+    useStudents();
 
   useEffect(() => {
-    const getStudents = async () => {
-      const response = await API.get("students/");
-      setStudentsData(response.data.results);
-    };
-
     getStudents();
   }, []);
 
   return (
-    <Style.Container>
-      <Style.Header>
-        Students enrolled
-        <Button icon={<GrAdd />}>Student</Button>
-      </Style.Header>
-      <Style.Content>
-        {studentsData.map((student) => (
-          <Card
-            key={student.id}
-            photoURL={student.photo}
-            name={student.name}
-            birthDate={student.birth_data}
-            email={student.email}
-            cpf={student.cpf}
-            rg={student.rg}
-            phoneNumber={student.phone}
-          />
-        ))}
-      </Style.Content>
-    </Style.Container>
+    <>
+      <Modal
+        isOpen={modalIsOpen}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        <ContentModal />
+      </Modal>
+      <Style.Container>
+        <Style.Header>
+          Students enrolled
+          <Button onClick={openModal} icon={<GrAdd />}>
+            Student
+          </Button>
+        </Style.Header>
+        <Style.Content>
+          {studentsData.map((student) => (
+            <Card
+              key={student.id}
+              photoURL={student.photo}
+              name={student.name}
+              birthDate={student.birth_data}
+              email={student.email}
+              cpf={student.cpf}
+              rg={student.rg}
+              phoneNumber={student.phone}
+            />
+          ))}
+        </Style.Content>
+      </Style.Container>
+    </>
   );
 };

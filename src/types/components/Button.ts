@@ -1,6 +1,7 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
 export type ButtonProps = {
-    children: string
-    icon: ReactNode
-}
+  children: string;
+  icon: ReactNode;
+  onClick: () => void;
+};
