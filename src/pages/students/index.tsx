@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 
 import { API } from "../../services/connection";
 import { Card } from "../../components";
+import { StudentProps } from "../../types";
 
 export const Students = () => {
-  const [studentsData, setStudentsData] = useState([]);
+  const [studentsData, setStudentsData] = useState<StudentProps[]>([]);
 
   useEffect(() => {
     const getStudents = async () => {

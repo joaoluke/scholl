@@ -2,9 +2,18 @@ import { RiPassportLine } from "react-icons/ri";
 import { BsFilePersonFill } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 
+import { CardProps } from "../../types";
+
 import { Container } from "./style";
 
-export const Card = ({ photoURL, name, birthDate, email, cpf, rg }) => {
+export const Card = ({
+  photoURL,
+  name,
+  birthDate,
+  email,
+  cpf,
+  rg,
+}: CardProps) => {
   return (
     <Container>
       <div className="card-header">
@@ -13,7 +22,10 @@ export const Card = ({ photoURL, name, birthDate, email, cpf, rg }) => {
       <div className="card-body">
         <span className="tag tag-red">{birthDate}</span>
         <h4 className="name">{name}</h4>
-        <p><AiOutlineMail/>{email}</p>
+        <p>
+          <AiOutlineMail />
+          {email}
+        </p>
         <span>
           <RiPassportLine />
           {cpf}
