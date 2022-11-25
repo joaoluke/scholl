@@ -6,4 +6,5 @@ export type StudentProps = {
     cpf: number
     rg: number
     id: number
+    phone: string
 }

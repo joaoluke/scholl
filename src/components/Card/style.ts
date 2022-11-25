@@ -70,7 +70,7 @@ export const Container = styled.div`
 
   .card-body p {
     font-size: 13px;
-    margin: 0 0 20px;
+    margin: 0 0 10px;
     display: flex;
   }
 `;

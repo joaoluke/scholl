@@ -8,6 +8,7 @@ import { CardProps } from "../../types";
 import * as Style from "./style";
 
 export const Card = ({
+  phoneNumber,
   photoURL,
   name,
   birthDate,
@@ -31,7 +32,7 @@ export const Card = ({
         </p>
         <p>
           <AiFillPhone style={{ marginRight: "5px" }} />
-          {email}
+          {phoneNumber}
         </p>
         <span>
           <RiPassportLine style={{ marginRight: "5px" }} />
