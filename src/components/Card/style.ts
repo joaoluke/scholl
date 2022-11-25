@@ -15,6 +15,7 @@ export const Container = styled.div`
   color: #10182f;
   flex-direction: column;
   width: 14rem;
+  margin: 1rem;
 
   .container {
     display: flex;
@@ -70,22 +71,6 @@ export const Container = styled.div`
   .card-body p {
     font-size: 13px;
     margin: 0 0 20px;
-  }
-  .user {
     display: flex;
-    margin-top: auto;
-  }
-
-  .user img {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-  }
-  .user-info h5 {
-    margin: 0;
-  }
-  .user-info small {
-    color: #545d7a;
   }
 `;

@@ -1,10 +1,11 @@
 import { RiPassportLine } from "react-icons/ri";
 import { BsFilePersonFill } from "react-icons/bs";
-import { AiOutlineMail } from "react-icons/ai";
+import { AiOutlineMail, AiFillPhone } from "react-icons/ai";
+import { parseISO, format } from "date-fns";
 
 import { CardProps } from "../../types";
 
-import { Container } from "./style";
+import * as Style from "./style";
 
 export const Card = ({
   photoURL,
@@ -15,26 +16,32 @@ export const Card = ({
   rg,
 }: CardProps) => {
   return (
-    <Container>
+    <Style.Container>
       <div className="card-header">
         <img src={photoURL} alt="city" />
       </div>
       <div className="card-body">
-        <span className="tag tag-red">{birthDate}</span>
+        <span className="tag tag-red">
+          {format(parseISO(birthDate), "MM/dd/yyyy")}
+        </span>
         <h4 className="name">{name}</h4>
         <p>
-          <AiOutlineMail />
+          <AiOutlineMail style={{ marginRight: "5px" }} />
+          {email}
+        </p>
+        <p>
+          <AiFillPhone style={{ marginRight: "5px" }} />
           {email}
         </p>
         <span>
-          <RiPassportLine />
-          {cpf}
+          <RiPassportLine style={{ marginRight: "5px" }} />
+          <b>CPF: </b>{cpf}
         </span>
         <span>
-          <BsFilePersonFill />
-          {rg}
+          <BsFilePersonFill style={{ marginRight: "5px" }} />
+          <b>RG: </b>{rg}
         </span>
       </div>
-    </Container>
+    </Style.Container>
   );
 };

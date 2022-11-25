@@ -4,6 +4,8 @@ import { API } from "../../services/connection";
 import { Card } from "../../components";
 import { StudentProps } from "../../types";
 
+import * as Style from "./style";
+
 export const Students = () => {
   const [studentsData, setStudentsData] = useState<StudentProps[]>([]);
 
@@ -17,19 +19,18 @@ export const Students = () => {
   }, []);
 
   return (
-    <div>
-      {studentsData.length &&
-        studentsData.map((student) => (
-          <Card
-            key={student.id}
-            photoURL={student.photo}
-            name={student.name}
-            birthDate={student.birth_data}
-            email={student.email}
-            cpf={student.cpf}
-            rg={student.rg}
-          />
-        ))}
-    </div>
+    <Style.Container>
+      {studentsData.map((student) => (
+        <Card
+          key={student.id}
+          photoURL={student.photo}
+          name={student.name}
+          birthDate={student.birth_data}
+          email={student.email}
+          cpf={student.cpf}
+          rg={student.rg}
+        />
+      ))}
+    </Style.Container>
   );
 };
