@@ -5,8 +5,7 @@ import * as Style from "./style";
 export const Button = ({ children, icon, onClick }: ButtonProps) => {
   return (
     <Style.Container onClick={onClick}>
-      {icon}
-      {children}
+      {icon} {children}
     </Style.Container>
   );
 };
