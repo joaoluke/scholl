@@ -2,7 +2,9 @@ import * as Yup from "yup";
 import { useState, ChangeEvent } from "react";
 import { Formik, Form, Field } from "formik";
 import Grid from "@mui/material/Unstable_Grid2";
-import InputMask from "react-input-mask";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import { formatCPF, formattedRG } from "../../../utils";
 
@@ -37,56 +39,66 @@ export const ContentModal = () => {
   };
 
   return (
-    <Formik
-      initialValues={{
-        name: "",
-        cpf: "",
-        rg: "",
-      }}
-      validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        return;
-        console.log(values);
-      }}
-    >
-      {({ errors, touched }) => (
-        <Style.FORM>
-          <Grid container spacing={2}>
-            <Grid xs={12}>
-              <Style.label>Name:</Style.label>
-              <Style.INPUT name="name" />
-              {errors.name && touched.name ? (
-                <div>{errors.name}</div>
-              ) : null}
-            </Grid>
+    <Style.FORM>
+      <Grid container spacing={2}>
+        <Grid xs={12}>
+          <FormControl fullWidth>
+            <TextField label="Name" variant="outlined" />
+          </FormControl>
+        </Grid>
 
-            <Grid xs={6}>
-              <Style.label>CPF:</Style.label>
-              <Style.INPUT name="cpf" onChange={handleCPF} value={cpf} />
-              {errors.cpf && touched.cpf ? (
-                <div>{errors.cpf}</div>
-              ) : null}
-            </Grid>
+        <Grid xs={6}>
+          <FormControl fullWidth>
+            <TextField
+              label="CPF"
+              variant="outlined"
+              value={cpf}
+              onChange={handleCPF}
+            />
+          </FormControl>
+        </Grid>
 
-            <Grid xs={6}>
-              <Style.label>RG:</Style.label>
-              <Style.INPUT name="rg" onChange={handleRG} value={rg} />
+        <Grid xs={6}>
+          <FormControl fullWidth>
+            <TextField
+              label="RG"
+              variant="outlined"
+              value={rg}
+              onChange={handleRG}
+            />
+          </FormControl>
+        </Grid>
+        <Grid xs={12}>
+          <FormControl fullWidth>
+            <TextField label="Name" variant="outlined" />
+          </FormControl>
+        </Grid>
 
-              {errors.rg && touched.rg ? (
-                <div>{errors.rg}</div>
-              ) : null}
-            </Grid>
-          </Grid>
+        <Grid xs={6}>
+          <FormControl fullWidth>
+            <DesktopDatePicker
+              label="Birth Date"
+              inputFormat="MM/dd/yyyy"
+              value={""}
+              onChange={() => null}
+              renderInput={(
+                params: JSX.IntrinsicAttributes & TextFieldProps
+              ) => <TextField {...params} />}
+            />
+          </FormControl>
+        </Grid>
 
-          {/* <Field name="lastName" />
-          {errors.lastName && touched.lastName ? (
-            <div>{errors.lastName}</div>
-          ) : null}
-          <Field name="email" type="email" />
-          {errors.email && touched.email ? <div>{errors.email}</div> : null}
-          <button type="submit">Submit</button> */}
-        </Style.FORM>
-      )}
-    </Formik>
+        <Grid xs={6}>
+          <FormControl fullWidth>
+            <TextField
+              label="Phone"
+              variant="outlined"
+              value={rg}
+              onChange={handleRG}
+            />
+          </FormControl>
+        </Grid>
+      </Grid>
+    </Style.FORM>
   );
 };
