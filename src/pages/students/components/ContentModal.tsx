@@ -1,67 +1,47 @@
 import * as Yup from "yup";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { Formik, Form, Field } from "formik";
 import Grid from "@mui/material/Unstable_Grid2";
 import InputMask from "react-input-mask";
-import StringMask from "string-mask";
+
+import { formatCPF, formattedRG } from "../../../utils";
 
 import * as Style from "./style";
 
 const SignupSchema = Yup.object().shape({
-  firstName: Yup.string()
+  name: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  lastName: Yup.string()
+  cpf: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
+  rg: Yup.string().email("Invalid email").required("Required"),
 });
-
-const CustomInput = (props) => (
-  <InputMask {...props}>
-    {(inputProps) => <Style.INPUT {...inputProps} />}
-  </InputMask>
-);
-
-const DELIMITER = "-";
-const DELIMITER_TWO = ".";
-const MASK = "000.000.000-00";
 
 export const ContentModal = () => {
   const [cpf, setCPF] = useState("");
+  const [rg, setRG] = useState("");
 
-  function removeTrailingCharIfFound(
-    str: string,
-    char: string,
-    charTwo: string
-  ): string {
-    return str
-      .split(/[.-]+/)
-      .filter((segment) => segment !== "")
-      .join(/[.-]+/);
-  }
+  const handleCPF = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length <= 14) {
+      setCPF(formatCPF(event.target.value));
+    }
+  };
 
-  function formatValue(str: string): string {
-    let unmaskedValue = str.split(DELIMITER).join("");
-    unmaskedValue = str.split(DELIMITER_TWO).join("");
-    console.log(unmaskedValue, "unmaskedValue");
-    const formatted = StringMask.process(unmaskedValue, MASK);
-    console.log(formatted, "FORMATE");
-    return removeTrailingCharIfFound(
-      formatted.result,
-      DELIMITER,
-      DELIMITER_TWO
-    );
-  }
+  const handleRG = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length <= 12) {
+      setRG(formattedRG(event.target.value));
+    }
+  };
 
   return (
     <Formik
       initialValues={{
-        firstName: "",
-        lastName: "",
-        email: "",
+        name: "",
+        cpf: "",
+        rg: "",
       }}
       validationSchema={SignupSchema}
       onSubmit={(values) => {
@@ -73,37 +53,27 @@ export const ContentModal = () => {
         <Style.FORM>
           <Grid container spacing={2}>
             <Grid xs={12}>
-              <Style.label>First Name:</Style.label>
-              <Style.INPUT name="firstName" />
-
-              {errors.firstName && touched.firstName ? (
-                <div>{errors.firstName}</div>
+              <Style.label>Name:</Style.label>
+              <Style.INPUT name="name" />
+              {errors.name && touched.name ? (
+                <div>{errors.name}</div>
               ) : null}
             </Grid>
+
             <Grid xs={6}>
-              <Style.label>First Name:</Style.label>
-              <Field name="firstName">
-                {(fieldProps) => (
-                  <Style.INPUT
-                    {...fieldProps.field}
-                    onChange={(event) => {
-                      fieldProps.field.onChange(event.target.name)(
-                        formatValue(event.target.value)
-                      );
-                    }}
-                  />
-                )}
-              </Field>
-              {errors.firstName && touched.firstName ? (
-                <div>{errors.firstName}</div>
+              <Style.label>CPF:</Style.label>
+              <Style.INPUT name="cpf" onChange={handleCPF} value={cpf} />
+              {errors.cpf && touched.cpf ? (
+                <div>{errors.cpf}</div>
               ) : null}
             </Grid>
-            <Grid xs={6}>
-              <Style.label>First Name:</Style.label>
-              <Style.INPUT name="firstName" />
 
-              {errors.firstName && touched.firstName ? (
-                <div>{errors.firstName}</div>
+            <Grid xs={6}>
+              <Style.label>RG:</Style.label>
+              <Style.INPUT name="rg" onChange={handleRG} value={rg} />
+
+              {errors.rg && touched.rg ? (
+                <div>{errors.rg}</div>
               ) : null}
             </Grid>
           </Grid>
