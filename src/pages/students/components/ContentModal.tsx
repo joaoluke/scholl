@@ -1,12 +1,12 @@
 import * as Yup from "yup";
 import { useState, ChangeEvent } from "react";
-import { Formik, Form, Field } from "formik";
 import Grid from "@mui/material/Unstable_Grid2";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import { formatCPF, formattedRG } from "../../../utils";
+import { UploaderFile } from "../../../components";
 
 import * as Style from "./style";
 
@@ -68,6 +68,7 @@ export const ContentModal = () => {
             />
           </FormControl>
         </Grid>
+
         <Grid xs={12}>
           <FormControl fullWidth>
             <TextField label="Name" variant="outlined" />
@@ -79,8 +80,8 @@ export const ContentModal = () => {
             <DesktopDatePicker
               label="Birth Date"
               inputFormat="MM/dd/yyyy"
-              value={""}
-              onChange={() => null}
+              value={new Date()}
+              onChange={(date) => console.log(date)}
               renderInput={(
                 params: JSX.IntrinsicAttributes & TextFieldProps
               ) => <TextField {...params} />}
@@ -96,6 +97,12 @@ export const ContentModal = () => {
               value={rg}
               onChange={handleRG}
             />
+          </FormControl>
+        </Grid>
+
+        <Grid xs={12}>
+          <FormControl fullWidth>
+            <UploaderFile/>
           </FormControl>
         </Grid>
       </Grid>
