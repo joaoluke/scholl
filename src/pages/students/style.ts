@@ -12,7 +12,7 @@ export const Header = styled.header`
   font-size: 2rem;
   margin-top: 1rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 export const Content = styled.div`

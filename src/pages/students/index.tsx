@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
+import Pagination from "@mui/material/Pagination";
 
 import { Card } from "../../components";
 import { ContentModal } from "./components/ContentModal";
@@ -26,8 +26,30 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export const Students = () => {
-  const { getStudents, studentsData, modalIsOpen, closeModal, openModal } =
-    useStudents();
+  const {
+    getStudents,
+    name,
+    handleName,
+    cpf,
+    handleCPF,
+    rg,
+    handleRG,
+    email,
+    handleEmail,
+    studentsData,
+    phone,
+    handlePhone,
+    birthDate,
+    handleBirthDate,
+    image,
+    handleImage,
+    saveStudent,
+    totalStudents,
+    page,
+    modalIsOpen,
+    closeModal,
+    openModal,
+  } = useStudents();
 
   useEffect(() => {
     getStudents();
@@ -53,19 +75,36 @@ export const Students = () => {
       >
         <DialogTitle>Add new Student</DialogTitle>
         <DialogContent>
-          <ContentModal />
+          <ContentModal
+            name={name}
+            handleName={handleName}
+            cpf={cpf}
+            handleCPF={handleCPF}
+            rg={rg}
+            handleRG={handleRG}
+            email={email}
+            handleEmail={handleEmail}
+            phone={phone}
+            handlePhone={handlePhone}
+            birthDate={birthDate}
+            handleBirthDate={handleBirthDate}
+            handleImage={handleImage}
+            image={image}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
+          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={saveStudent} autoFocus>
+            Save
           </Button>
         </DialogActions>
       </Dialog>
       <Style.Container>
         <Style.Header>
           Students enrolled
-          <Button onClick={handleClickOpen}>Student</Button>
+          <Button variant="contained" onClick={handleClickOpen}>
+            Add New Student
+          </Button>
         </Style.Header>
         <Style.Content>
           {studentsData.map((student) => (
@@ -81,6 +120,12 @@ export const Students = () => {
             />
           ))}
         </Style.Content>
+        <Pagination
+          page={page}
+          onChange={(event, value) => getStudents(value)}
+          count={Math.ceil(totalStudents / 10)}
+          style={{ margin: "1rem" }}
+        />
       </Style.Container>
     </>
   );

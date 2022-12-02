@@ -1,49 +1,55 @@
-import * as Yup from "yup";
-import { useState, ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
-import { formatCPF, formattedRG } from "../../../utils";
 import { UploaderFile } from "../../../components";
 
 import * as Style from "./style";
 
-const SignupSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  cpf: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  rg: Yup.string().email("Invalid email").required("Required"),
-});
+type ContentModalProps = {
+  name: string;
+  handleName(event: ChangeEvent<HTMLInputElement>): void;
+  cpf: string;
+  handleCPF(event: ChangeEvent<HTMLInputElement>): void;
+  rg: string;
+  handleRG(event: ChangeEvent<HTMLInputElement>): void;
+  email: string;
+  handleEmail(event: ChangeEvent<HTMLInputElement>): void;
+  phone: string;
+  handlePhone(event: ChangeEvent<HTMLInputElement>): void;
+  birthDate: Date;
+  handleBirthDate(event: Date): void;
+};
 
-export const ContentModal = () => {
-  const [cpf, setCPF] = useState("");
-  const [rg, setRG] = useState("");
-
-  const handleCPF = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length <= 14) {
-      setCPF(formatCPF(event.target.value));
-    }
-  };
-
-  const handleRG = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length <= 12) {
-      setRG(formattedRG(event.target.value));
-    }
-  };
-
+export const ContentModal = ({
+  name,
+  handleName,
+  handleCPF,
+  cpf,
+  handleRG,
+  rg,
+  email,
+  handleEmail,
+  phone,
+  handlePhone,
+  birthDate,
+  handleBirthDate,
+  handleImage,
+  image,
+}: ContentModalProps) => {
   return (
     <Style.FORM>
       <Grid container spacing={2}>
         <Grid xs={12}>
           <FormControl fullWidth>
-            <TextField label="Name" variant="outlined" />
+            <TextField
+              label="Name"
+              variant="outlined"
+              value={name}
+              onChange={handleName}
+            />
           </FormControl>
         </Grid>
 
@@ -71,7 +77,13 @@ export const ContentModal = () => {
 
         <Grid xs={12}>
           <FormControl fullWidth>
-            <TextField label="Name" variant="outlined" />
+            <TextField
+              value={email}
+              onChange={handleEmail}
+              label="Email"
+              type="email"
+              variant="outlined"
+            />
           </FormControl>
         </Grid>
 
@@ -80,8 +92,8 @@ export const ContentModal = () => {
             <DesktopDatePicker
               label="Birth Date"
               inputFormat="MM/dd/yyyy"
-              value={new Date()}
-              onChange={(date) => console.log(date)}
+              value={birthDate}
+              onChange={handleBirthDate}
               renderInput={(
                 params: JSX.IntrinsicAttributes & TextFieldProps
               ) => <TextField {...params} />}
@@ -94,15 +106,15 @@ export const ContentModal = () => {
             <TextField
               label="Phone"
               variant="outlined"
-              value={rg}
-              onChange={handleRG}
+              value={phone}
+              onChange={handlePhone}
             />
           </FormControl>
         </Grid>
 
         <Grid xs={12}>
           <FormControl fullWidth>
-            <UploaderFile/>
+            <UploaderFile onChange={handleImage} value={image}/>
           </FormControl>
         </Grid>
       </Grid>
