@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { GrAdd } from "react-icons/gr";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -10,7 +10,9 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Pagination from "@mui/material/Pagination";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { CardComponent } from "../../components";
 import { ContentModal } from "./components/ContentModal";
@@ -57,13 +59,33 @@ export const Students = () => {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [openLoading, setOpenLoading] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleToggle = () => {
+    setOpen(!open);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleCloseLoading = () => {
     setOpen(false);
+  };
+
+  const handlePagination = async (
+    event: ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setOpenLoading(true);
+    await getStudents(value);
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+    setOpenLoading(false);
   };
 
   return (
@@ -95,15 +117,26 @@ export const Students = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={saveStudent} autoFocus>
+          <Button onClick={saveStudent} autoFocus variant="contained">
             Save
           </Button>
         </DialogActions>
       </Dialog>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoading}
+        // onClick={handleCloseLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Style.Container>
         <Style.Header>
           Students enrolled
-          <Button startIcon={<AddIcon />} variant="contained" onClick={handleClickOpen}>
+          <Button
+            startIcon={<AddIcon />}
+            variant="contained"
+            onClick={handleClickOpen}
+          >
             Add New Student
           </Button>
         </Style.Header>
@@ -123,9 +156,10 @@ export const Students = () => {
         </Style.Content>
         <Pagination
           page={page}
-          onChange={(event, value) => getStudents(value)}
+          onChange={handlePagination}
           count={Math.ceil(totalStudents / 10)}
-          style={{ margin: "1rem" }}
+          sx={{ margin: 3 }}
+          color="primary"
         />
       </Style.Container>
     </>
