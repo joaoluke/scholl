@@ -95,10 +95,10 @@ export const CardComponent = ({
       </CardContent>
       <CardActions disableSpacing>
         <IconButton>
-          <DeleteIcon color="error" />
+          <DeleteIcon color="primary" />
         </IconButton>
         <IconButton>
-          <EditIcon color="warning" />
+          <EditIcon color="primary" />
         </IconButton>
         <ExpandMore
           expand={expanded}
