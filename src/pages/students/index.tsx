@@ -1,12 +1,9 @@
 import { useEffect, useState, ChangeEvent } from "react";
-import { GrAdd } from "react-icons/gr";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Pagination from "@mui/material/Pagination";
@@ -19,14 +16,6 @@ import { ContentModal } from "./components/ContentModal";
 import useStudents from "./useStudents";
 
 import * as Style from "./style";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 
 export const Students = () => {
   const {
@@ -49,22 +38,34 @@ export const Students = () => {
     saveStudent,
     totalStudents,
     page,
-    modalIsOpen,
-    closeModal,
-    openModal,
+    errorsInputs,
   } = useStudents();
+  console.log(errorsInputs, "errorsInputs,")
 
   useEffect(() => {
     getStudents();
   }, []);
 
+  const [enableSaveButton, setEnableSaveButton] = useState(true);
+
+  useEffect(() => {
+    setEnableSaveButton(
+      !Boolean(
+        name.length &&
+          cpf.length &&
+          rg.length &&
+          email.length &&
+          birthDate &&
+          phone.length &&
+          image
+      )
+    );
+  }, [name, cpf, rg, email, birthDate, phone, image]);
+
   const [open, setOpen] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
   const handleClose = () => {
     setOpen(false);
-  };
-  const handleToggle = () => {
-    setOpen(!open);
   };
 
   const handleClickOpen = () => {
@@ -113,11 +114,17 @@ export const Students = () => {
             handleBirthDate={handleBirthDate}
             handleImage={handleImage}
             image={image}
+            errorsInputs={errorsInputs}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={saveStudent} autoFocus variant="contained">
+          <Button
+            onClick={saveStudent}
+            disabled={enableSaveButton}
+            autoFocus
+            variant="contained"
+          >
             Save
           </Button>
         </DialogActions>

@@ -38,7 +38,9 @@ export const ContentModal = ({
   handleBirthDate,
   handleImage,
   image,
+  errorsInputs,
 }: ContentModalProps) => {
+  console.log(errorsInputs);
   return (
     <Style.FORM>
       <Grid container spacing={2}>
@@ -60,6 +62,8 @@ export const ContentModal = ({
               variant="outlined"
               value={cpf}
               onChange={handleCPF}
+              error={errorsInputs.cpf && Boolean(errorsInputs.cpf.length)}
+              helperText={ errorsInputs.cpf && errorsInputs.cpf[0]}
             />
           </FormControl>
         </Grid>
@@ -71,6 +75,8 @@ export const ContentModal = ({
               variant="outlined"
               value={rg}
               onChange={handleRG}
+              error={errorsInputs.rg && Boolean(errorsInputs.rg.length)}
+              helperText={errorsInputs.rg && errorsInputs.rg[0]}
             />
           </FormControl>
         </Grid>
@@ -83,6 +89,8 @@ export const ContentModal = ({
               label="Email"
               type="email"
               variant="outlined"
+              error={errorsInputs.email && Boolean(errorsInputs.email.length)}
+              helperText={errorsInputs.email && errorsInputs.email[0]}
             />
           </FormControl>
         </Grid>
@@ -114,7 +122,7 @@ export const ContentModal = ({
 
         <Grid xs={12}>
           <FormControl fullWidth>
-            <UploaderFile onChange={handleImage} value={image}/>
+            <UploaderFile onChange={handleImage} value={image} />
           </FormControl>
         </Grid>
       </Grid>

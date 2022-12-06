@@ -20,10 +20,22 @@ export default () => {
   const [page, setPage] = useState<any>(1);
 
   const [errorsInputs, setErrorsInputs] = useState({
-    name: "",
-    cpf: "",
-    rg: "",
+    name: [],
+    cpf: [],
+    rg: [],
+    email: []
   });
+
+  const checkEmptyInput = () => () =>
+    Boolean(
+      name.length &&
+        cpf.length &&
+        rg.length &&
+        email.length &&
+        birthDate &&
+        phone.length &&
+        image.length
+    );
 
   const getStudents = async (pageNumber = 1) => {
     setPage(pageNumber);
@@ -43,7 +55,13 @@ export default () => {
     formData.append("photo", image);
 
     console.log(formData, "formData");
-    const response = await API.post("students/", formData);
+    try {
+      const response = await API.post("students/", formData);
+    } catch (err) {
+      const error = Object.assign(errorsInputs, err.response.data);
+      console.log(error);
+      setErrorsInputs(error);
+    }
   };
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -111,5 +129,7 @@ export default () => {
     saveStudent,
     totalStudents,
     page,
+    checkEmptyInput,
+    errorsInputs,
   };
 };
