@@ -10,8 +10,9 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Pagination from "@mui/material/Pagination";
+import AddIcon from '@mui/icons-material/Add';
 
-import { Card } from "../../components";
+import { CardComponent } from "../../components";
 import { ContentModal } from "./components/ContentModal";
 import useStudents from "./useStudents";
 
@@ -102,13 +103,13 @@ export const Students = () => {
       <Style.Container>
         <Style.Header>
           Students enrolled
-          <Button variant="contained" onClick={handleClickOpen}>
+          <Button startIcon={<AddIcon />} variant="contained" onClick={handleClickOpen}>
             Add New Student
           </Button>
         </Style.Header>
         <Style.Content>
           {studentsData.map((student) => (
-            <Card
+            <CardComponent
               key={student.id}
               photoURL={student.photo}
               name={student.name}
