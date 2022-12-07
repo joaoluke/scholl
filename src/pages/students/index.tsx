@@ -4,12 +4,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Pagination from "@mui/material/Pagination";
 import AddIcon from "@mui/icons-material/Add";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import SaveIcon from "@mui/icons-material/Save";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { CardComponent } from "../../components";
 import { ContentModal } from "./components/ContentModal";
@@ -29,7 +30,6 @@ export const Students = () => {
     handleRG,
     email,
     handleEmail,
-    studentsData,
     phone,
     handlePhone,
     birthDate,
@@ -40,11 +40,13 @@ export const Students = () => {
     totalStudents,
     page,
     errorsInputs,
+    loadingButtonSave,
+    modalIsOpen,
+    closeModal,
+    openModal
   } = useStudents();
 
   const { students, handleStudents } = useStudentContext();
-
-  console.log(students, "STUDENTS")
 
   useEffect(() => {
     getStudents();
@@ -68,6 +70,7 @@ export const Students = () => {
 
   const [open, setOpen] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -96,8 +99,8 @@ export const Students = () => {
   return (
     <>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={modalIsOpen}
+        onClose={closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -118,25 +121,35 @@ export const Students = () => {
             handleBirthDate={handleBirthDate}
             handleImage={handleImage}
             image={image}
-            errorsInputs={errorsInputs}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button
-            onClick={saveStudent}
-            disabled={enableSaveButton}
-            autoFocus
-            variant="contained"
-          >
-            Save
-          </Button>
+          <Button onClick={closeModal}>Close</Button>
+          {loadingButtonSave ? (
+            <LoadingButton
+              loading
+              loadingPosition="start"
+              startIcon={<SaveIcon />}
+              variant="outlined"
+            >
+              Save
+            </LoadingButton>
+          ) : (
+            <Button
+              onClick={saveStudent}
+              // disabled={enableSaveButton}
+              autoFocus
+              variant="contained"
+            >
+              Save
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openLoading}
-        // onClick={handleCloseLoading}
+        onClick={handleCloseLoading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -146,7 +159,7 @@ export const Students = () => {
           <Button
             startIcon={<AddIcon />}
             variant="contained"
-            onClick={handleClickOpen}
+            onClick={openModal}
           >
             Add New Student
           </Button>

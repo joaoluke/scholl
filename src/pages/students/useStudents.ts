@@ -1,16 +1,20 @@
 import { useState, ChangeEvent } from "react";
 import { format } from "date-fns";
+import request from "axios";
 
 import { useStudentContext } from "../../contexts/Student";
 import { API } from "../../services/connection";
 import { StudentProps } from "../../types";
 import { formatCPF, formatPhone, formattedRG } from "../../utils";
+import { useAlertsContext } from "../../contexts/Alerts";
 
 export default () => {
-  const { handleInputErrors,errorsInputs, handleStudents } = useStudentContext();
+  const { handleInputErrors, errorsInputs, resetInputErrors, handleStudents } =
+    useStudentContext();
+  const { handleOpenAlertSuccess } = useAlertsContext();
 
   const [studentsData, setStudentsData] = useState<StudentProps[]>([]);
-  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [cpf, setCPF] = useState<string>("");
   const [rg, setRG] = useState<string>("");
@@ -18,6 +22,7 @@ export default () => {
   const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [phone, setPhone] = useState<string>("");
   const [image, setImage] = useState<any>("");
+  const [loadingButtonSave, setLoadingButtonSave] = useState<boolean>(false);
 
   const [totalStudents, setTotalStudents] = useState<any>("");
   const [page, setPage] = useState<any>(1);
@@ -37,11 +42,16 @@ export default () => {
     setPage(pageNumber);
     const response = await API.get(`students/?page=${pageNumber}`);
     setStudentsData(response.data.results);
-    handleStudents(response.data.results)
+    handleStudents(response.data.results);
     setTotalStudents(response.data.count);
   };
 
+  const getStudent = async (id: number) => {
+    const response = await API.get(`students/${id}`);
+  };
+
   const saveStudent = async () => {
+    setLoadingButtonSave(true);
     const formData = new FormData();
     formData.append("name", name);
     formData.append("cpf", cpf);
@@ -54,8 +64,15 @@ export default () => {
     console.log(formData, "formData");
     try {
       const response = await API.post("students/", formData);
-    } catch (err) {
-      handleInputErrors(err.response.data);
+      closeModal();
+      resetInputErrors();
+      handleOpenAlertSuccess("Student successfully saved!");
+    } catch (error) {
+      if (request.isAxiosError(error) && error.response) {
+        handleInputErrors(error.response?.data);
+      }
+    } finally {
+      setLoadingButtonSave(false);
     }
   };
 
@@ -89,16 +106,16 @@ export default () => {
     }
   };
 
-  const handleImage = (file: any) => {
-    setImage(file);
+  const handleImage = (files: FileList) => {
+    setImage(files[0]);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    setModalIsOpen(false);
   };
 
   const openModal = () => {
-    setIsOpen(true);
+    setModalIsOpen(true);
   };
 
   return {
@@ -126,5 +143,6 @@ export default () => {
     page,
     checkEmptyInput,
     errorsInputs,
+    loadingButtonSave,
   };
 };

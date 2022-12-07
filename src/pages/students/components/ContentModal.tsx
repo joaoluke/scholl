@@ -5,9 +5,9 @@ import FormControl from "@mui/material/FormControl";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import { UploaderFile } from "../../../components";
+import { useStudentContext } from "../../../contexts/Student";
 
 import * as Style from "./style";
-import { useStudentContext } from "../../../contexts/Student";
 
 type ContentModalProps = {
   name: string;
@@ -21,7 +21,9 @@ type ContentModalProps = {
   phone: string;
   handlePhone(event: ChangeEvent<HTMLInputElement>): void;
   birthDate: Date;
-  handleBirthDate(event: Date): void;
+  handleBirthDate(event: Date | null): void;
+  handleImage(files: FileList | null ): void 
+  image: File
 };
 
 export const ContentModal = ({
@@ -40,9 +42,8 @@ export const ContentModal = ({
   handleImage,
   image,
 }: ContentModalProps) => {
-  const { students, errorsInputs } = useStudentContext();
+  const { errorsInputs } = useStudentContext();
 
-  console.log(errorsInputs);
   return (
     <Style.FORM>
       <Grid container spacing={2}>

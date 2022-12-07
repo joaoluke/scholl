@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
+import { UploaderProps } from "../../types";
 
 import * as Style from "./style";
 
-export const UploaderFile = ({ onChange, value }) => {
-  const [urlImage, setUrlImage] = useState("");
+export const UploaderFile = ({ onChange, value }: UploaderProps) => {
+  const [urlImage, setUrlImage] = useState<string>("");
 
-  const handleImage = (e) => {
-    console.log(e.target.files[0].name);
-    setUrlImage(e.target.value);
-    onChange(e.target.files[0])
+  const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
+    setUrlImage(event.target.value);
+    onChange(event.target.files)
   };
 
   return (

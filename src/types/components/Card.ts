@@ -4,6 +4,6 @@ export type CardProps = {
   name: string;
   birthDate: string;
   email: string;
-  cpf: number;
-  rg: number;
+  cpf: string;
+  rg: string;
 };
