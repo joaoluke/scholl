@@ -9,8 +9,13 @@ import { formatCPF, formatPhone, formattedRG } from "../../utils";
 import { useAlertsContext } from "../../contexts/Alerts";
 
 export default () => {
-  const { handleInputErrors, errorsInputs, resetInputErrors, handleStudents } =
-    useStudentContext();
+  const {
+    handleInputErrors,
+    getStudentsContext,
+    errorsInputs,
+    resetInputErrors,
+    handleStudents,
+  } = useStudentContext();
   const { handleOpenAlertSuccess } = useAlertsContext();
 
   const [studentsData, setStudentsData] = useState<StudentProps[]>([]);
@@ -38,12 +43,12 @@ export default () => {
         image.length
     );
 
-  const getStudents = async (pageNumber = 1) => {
+  const getStudents = async (search = "", pageNumber = 1) => {
     setPage(pageNumber);
-    const response = await API.get(`students/?page=${pageNumber}`);
-    setStudentsData(response.data.results);
-    handleStudents(response.data.results);
-    setTotalStudents(response.data.count);
+    const response = await getStudentsContext(search, pageNumber);
+    setStudentsData(response.results);
+    handleStudents(response.results);
+    setTotalStudents(response.count);
   };
 
   const getStudent = async (id: number) => {
@@ -61,7 +66,6 @@ export default () => {
     formData.append("phone", phone);
     formData.append("photo", image);
 
-    console.log(formData, "formData");
     try {
       const response = await API.post("students/", formData);
       closeModal();

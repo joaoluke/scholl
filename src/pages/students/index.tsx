@@ -10,7 +10,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import SaveIcon from "@mui/icons-material/Save";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import { CardComponent } from "../../components";
 import { ContentModal } from "./components/ContentModal";
@@ -37,16 +37,14 @@ export const Students = () => {
     image,
     handleImage,
     saveStudent,
-    totalStudents,
-    page,
     errorsInputs,
     loadingButtonSave,
     modalIsOpen,
     closeModal,
-    openModal
+    openModal,
   } = useStudents();
 
-  const { students, handleStudents } = useStudentContext();
+  const { students, page, totalStudents } = useStudentContext();
 
   useEffect(() => {
     getStudents();
@@ -68,31 +66,22 @@ export const Students = () => {
     );
   }, [name, cpf, rg, email, birthDate, phone, image]);
 
-  const [open, setOpen] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleCloseLoading = () => {
-    setOpen(false);
-  };
 
   const handlePagination = async (
     event: ChangeEvent<unknown>,
     value: number
   ) => {
     setOpenLoading(true);
-    await getStudents(value);
+    await getStudents("", value);
     window.scrollTo({
       top: 0,
       behavior: "auto",
     });
+    setOpenLoading(false);
+  };
+
+  const handleCloseLoading = () => {
     setOpenLoading(false);
   };
 
@@ -137,7 +126,7 @@ export const Students = () => {
           ) : (
             <Button
               onClick={saveStudent}
-              // disabled={enableSaveButton}
+              disabled={enableSaveButton}
               autoFocus
               variant="contained"
             >
@@ -178,13 +167,15 @@ export const Students = () => {
             />
           ))}
         </Style.Content>
-        <Pagination
-          page={page}
-          onChange={handlePagination}
-          count={Math.ceil(totalStudents / 10)}
-          sx={{ margin: 3 }}
-          color="primary"
-        />
+        {totalStudents > 10 && (
+          <Pagination
+            page={page}
+            onChange={handlePagination}
+            count={Math.ceil(totalStudents / 10)}
+            sx={{ margin: 3 }}
+            color="primary"
+          />
+        )}
       </Style.Container>
     </>
   );

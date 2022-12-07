@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, ChangeEvent, KeyboardEvent } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,6 +14,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import SchoolIcon from "@mui/icons-material/School";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { useStudentContext } from "../../contexts/Student";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,9 +61,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const pages = ["Home", "Students", "Curses", "Registrations"];
 
 export const Header = () => {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null
-  );
+  const { getStudentsContext } = useStudentContext();
+
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [search, setSearch] = useState<string>("");
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -70,6 +72,16 @@ export const Header = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleSearch = async (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.keyCode === 13) {
+      await getStudentsContext(search, 1);
+    }
+  };
+
+  const handleValueSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
   };
 
   return (
@@ -159,7 +171,7 @@ export const Header = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Search>
+            <Search onKeyDown={handleSearch} onChange={handleValueSearch}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
