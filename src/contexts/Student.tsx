@@ -1,7 +1,8 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 
 interface StudentContextData {
-  books: string;
+  students: any;
+  handleStudents: any;
 }
 
 type PropsStudentProviders = {
@@ -11,15 +12,32 @@ type PropsStudentProviders = {
 const StudentContext = createContext({} as StudentContextData);
 
 const StudentContextProvider = ({ children }: PropsStudentProviders) => {
-  const [books, setBooks] = useState<any>([]);
+  const [students, setStudents] = useState<any>([]);
+  const [errorsInputs, setErrorsInputs] = useState({
+    name: [],
+    cpf: [],
+    rg: [],
+    email: [],
+  });
+
+  const handleInputErrors = (errors) => {
+    setErrorsInputs(errors);
+  };
+
+  const handleStudents = (value) => {
+    setStudents(value);
+  };
+
   return (
-    <StudentContext.Provider value={{ books }}>
+    <StudentContext.Provider
+      value={{ students, handleStudents, handleInputErrors, errorsInputs }}
+    >
       {children}
     </StudentContext.Provider>
   );
 };
 
-export const useStudent = () => {
+export const useStudentContext = () => {
   return useContext(StudentContext);
 };
 

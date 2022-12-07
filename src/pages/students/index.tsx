@@ -13,6 +13,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { CardComponent } from "../../components";
 import { ContentModal } from "./components/ContentModal";
+import { useStudentContext } from "../../contexts/Student";
 import useStudents from "./useStudents";
 
 import * as Style from "./style";
@@ -40,7 +41,10 @@ export const Students = () => {
     page,
     errorsInputs,
   } = useStudents();
-  console.log(errorsInputs, "errorsInputs,")
+
+  const { students, handleStudents } = useStudentContext();
+
+  console.log(students, "STUDENTS")
 
   useEffect(() => {
     getStudents();
@@ -148,7 +152,7 @@ export const Students = () => {
           </Button>
         </Style.Header>
         <Style.Content>
-          {studentsData.map((student) => (
+          {students.map((student) => (
             <CardComponent
               key={student.id}
               photoURL={student.photo}

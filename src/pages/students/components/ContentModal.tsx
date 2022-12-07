@@ -7,6 +7,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { UploaderFile } from "../../../components";
 
 import * as Style from "./style";
+import { useStudentContext } from "../../../contexts/Student";
 
 type ContentModalProps = {
   name: string;
@@ -38,8 +39,9 @@ export const ContentModal = ({
   handleBirthDate,
   handleImage,
   image,
-  errorsInputs,
 }: ContentModalProps) => {
+  const { students, errorsInputs } = useStudentContext();
+
   console.log(errorsInputs);
   return (
     <Style.FORM>
@@ -51,6 +53,8 @@ export const ContentModal = ({
               variant="outlined"
               value={name}
               onChange={handleName}
+              error={errorsInputs.name && Boolean(errorsInputs.name.length)}
+              helperText={errorsInputs.name && errorsInputs.name[0]}
             />
           </FormControl>
         </Grid>
@@ -63,7 +67,7 @@ export const ContentModal = ({
               value={cpf}
               onChange={handleCPF}
               error={errorsInputs.cpf && Boolean(errorsInputs.cpf.length)}
-              helperText={ errorsInputs.cpf && errorsInputs.cpf[0]}
+              helperText={errorsInputs.cpf && errorsInputs.cpf[0]}
             />
           </FormControl>
         </Grid>
@@ -116,6 +120,8 @@ export const ContentModal = ({
               variant="outlined"
               value={phone}
               onChange={handlePhone}
+              error={errorsInputs.phone && Boolean(errorsInputs.phone.length)}
+              helperText={errorsInputs.phone && errorsInputs.phone[0]}
             />
           </FormControl>
         </Grid>

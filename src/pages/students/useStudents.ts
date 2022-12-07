@@ -1,11 +1,14 @@
-import { format } from "date-fns";
 import { useState, ChangeEvent } from "react";
+import { format } from "date-fns";
 
+import { useStudentContext } from "../../contexts/Student";
 import { API } from "../../services/connection";
 import { StudentProps } from "../../types";
 import { formatCPF, formatPhone, formattedRG } from "../../utils";
 
 export default () => {
+  const { handleInputErrors,errorsInputs, handleStudents } = useStudentContext();
+
   const [studentsData, setStudentsData] = useState<StudentProps[]>([]);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
@@ -18,13 +21,6 @@ export default () => {
 
   const [totalStudents, setTotalStudents] = useState<any>("");
   const [page, setPage] = useState<any>(1);
-
-  const [errorsInputs, setErrorsInputs] = useState({
-    name: [],
-    cpf: [],
-    rg: [],
-    email: []
-  });
 
   const checkEmptyInput = () => () =>
     Boolean(
@@ -41,6 +37,7 @@ export default () => {
     setPage(pageNumber);
     const response = await API.get(`students/?page=${pageNumber}`);
     setStudentsData(response.data.results);
+    handleStudents(response.data.results)
     setTotalStudents(response.data.count);
   };
 
@@ -58,9 +55,7 @@ export default () => {
     try {
       const response = await API.post("students/", formData);
     } catch (err) {
-      const error = Object.assign(errorsInputs, err.response.data);
-      console.log(error);
-      setErrorsInputs(error);
+      handleInputErrors(err.response.data);
     }
   };
 
