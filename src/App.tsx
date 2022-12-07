@@ -1,12 +1,28 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
 
-import { Header } from "./components";
+import { Header, Alert } from "./components";
 import { Students } from "./pages";
+import { useAlertsContext } from "./contexts/Alerts";
 
 function App() {
+  const { openAlertSuccess, messageAlertSuccess, handleCloseAlertSuccess } =
+    useAlertsContext();
+
   return (
     <div className="App">
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openAlertSuccess}
+        autoHideDuration={6000}
+        onClose={handleCloseAlertSuccess}
+      >
+        <Alert onClose={handleCloseAlertSuccess} severity="success" sx={{ width: "100%" }}>
+          {messageAlertSuccess}
+        </Alert>
+      </Snackbar>
+
       <Header></Header>
       <Routes>
         <Route path="/" element={<Students />} />
