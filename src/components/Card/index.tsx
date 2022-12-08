@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
 import { parseISO, format } from "date-fns";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import SaveIcon from "@mui/icons-material/Save";
+import LoadingButton from "@mui/lab/LoadingButton";
+import DialogContentText from "@mui/material/DialogContentText";
+import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
@@ -47,8 +55,11 @@ export const CardComponent = ({
   email,
   cpf,
   rg,
+  id,
 }: CardProps) => {
+  const { deleteStudent } = useStudentContext();
   const [expanded, setExpanded] = useState(false);
+  const [openModalConfirmation, setOpenModalConfirmation] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -57,71 +68,109 @@ export const CardComponent = ({
   const [open, setOpen] = useState(true);
 
   return (
-    <Card
-      sx={{ width: 250, margin: 3, height: expanded ? "auto" : "fit-content" }}
-    >
-      <CardMedia component="img" height="250" image={photoURL} />
-      <CardContent>
-        <Chip
-          icon={<CakeIcon color="primary" />}
-          label={format(parseISO(birthDate), "MM/dd/yyyy")}
-          variant="outlined"
-          sx={{ marginBottom: 1 }}
-        />
-        <Typography gutterBottom variant="h5" component="div">
-          {name}
-        </Typography>
-
-        <Badge>
-          <MailIcon color="action" sx={{ marginRight: 1 }} />
-          <Typography variant="caption" display="block">
-            {email}
-          </Typography>
-        </Badge>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton>
-          <DeleteIcon color="primary" />
-        </IconButton>
-        <IconButton>
-          <EditIcon color="primary" />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+    <>
+      <Dialog
+        open={openModalConfirmation}
+        onClose={() => setOpenModalConfirmation(false)}
+      >
+        <DialogTitle>Delete Student</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending
+            anonymous location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenModalConfirmation(false)}>Close</Button>
+          {false ? (
+            <LoadingButton
+              loading
+              loadingPosition="start"
+              startIcon={<SaveIcon />}
+              variant="outlined"
+            >
+              Save
+            </LoadingButton>
+          ) : (
+            <Button onClick={() => deleteStudent(id)} autoFocus variant="contained">
+              Save
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
+      <Card
+        sx={{
+          width: 250,
+          margin: 3,
+          height: expanded ? "auto" : "fit-content",
+        }}
+      >
+        <CardMedia component="img" height="250" image={photoURL} />
         <CardContent>
-          <List
-            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-            component="nav"
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <PhoneIcon />
-              </ListItemIcon>
-              <ListItemText primary={phoneNumber} />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemIcon>
-                <ListItemText primary="CPF" />
-              </ListItemIcon>
-              <ListItemText primary={cpf} />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemIcon>
-                <ListItemText primary="RG" />
-              </ListItemIcon>
-              <ListItemText primary={rg} />
-            </ListItemButton>
-          </List>
+          <Chip
+            icon={<CakeIcon color="primary" />}
+            label={format(parseISO(birthDate), "MM/dd/yyyy")}
+            variant="outlined"
+            sx={{ marginBottom: 1 }}
+          />
+          <Typography gutterBottom variant="h5" component="div">
+            {name}
+          </Typography>
+
+          <Badge>
+            <MailIcon color="action" sx={{ marginRight: 1 }} />
+            <Typography variant="caption" display="block">
+              {email}
+            </Typography>
+          </Badge>
         </CardContent>
-      </Collapse>
-    </Card>
+        <CardActions disableSpacing>
+          <IconButton>
+            <DeleteIcon
+              onClick={() => setOpenModalConfirmation(true)}
+              color="primary"
+            />
+          </IconButton>
+          <IconButton>
+            <EditIcon color="primary" />
+          </IconButton>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <List
+              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+              component="nav"
+            >
+              <ListItemButton>
+                <ListItemIcon>
+                  <PhoneIcon />
+                </ListItemIcon>
+                <ListItemText primary={phoneNumber} />
+              </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ListItemText primary="CPF" />
+                </ListItemIcon>
+                <ListItemText primary={cpf} />
+              </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ListItemText primary="RG" />
+                </ListItemIcon>
+                <ListItemText primary={rg} />
+              </ListItemButton>
+            </List>
+          </CardContent>
+        </Collapse>
+      </Card>{" "}
+    </>
   );
 };

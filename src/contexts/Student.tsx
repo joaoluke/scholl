@@ -5,43 +5,11 @@ import {
   ReactNode,
   ChangeEvent,
 } from "react";
+import axios from "axios";
 
 import { API } from "../services/connection";
-import { StudentProps, StudentResponse } from "../types";
+import { StudentProps, Errors, StudentContextData } from "../types";
 import { formatCPF, formatPhone, formattedRG } from "../utils";
-
-interface Errors {
-  rg?: String[];
-  cpf?: String[];
-  email?: String[];
-  photo?: String[];
-  phone?: String[];
-  name?: String[];
-}
-interface StudentContextData {
-  students: StudentProps[];
-  page: number;
-  totalStudents: number;
-  errorsInputs: Errors;
-  name: string;
-  cpf: string;
-  rg: string;
-  email: string;
-  birthDate: Date;
-  phone: string;
-  image: any;
-  handleName(event: ChangeEvent<HTMLInputElement>): void;
-  handleCPF(event: ChangeEvent<HTMLInputElement>): void;
-  handleRG(event: ChangeEvent<HTMLInputElement>): void;
-  handleEmail(event: ChangeEvent<HTMLInputElement>): void;
-  handleBirthDate(date: Date | null): void;
-  handlePhone(event: ChangeEvent<HTMLInputElement>): void;
-  handleImage(files: FileList): void;
-  handleStudents(value: StudentProps[]): void;
-  handleInputErrors(errors: Errors): void;
-  resetInputErrors(): void;
-  getStudentsContext(search: string, page: number): Promise<StudentResponse>;
-}
 
 type PropsStudentProviders = {
   children: ReactNode;
@@ -129,6 +97,20 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
     return response.data;
   };
 
+  const options = {
+    method: "DELETE",
+    // headers: {
+    //   "Content-Type": "application/json",
+    //   "Access-Control-Allow-Origin": "*",
+    //   "Access-Control-Allow-Headers": "*",
+    //   "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+    // },
+  };
+
+  const deleteStudent = async (id: string) => {
+    await axios.delete(`http://localhost:8000/students/${id}/`);
+  };
+
   return (
     <StudentContext.Provider
       value={{
@@ -153,7 +135,8 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
         handleEmail,
         handleBirthDate,
         handlePhone,
-        handleImage
+        handleImage,
+        deleteStudent,
       }}
     >
       {children}

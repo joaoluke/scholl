@@ -47,6 +47,7 @@ export const Students = () => {
 
   const [enableSaveButton, setEnableSaveButton] = useState(true);
 
+
   useEffect(() => {
     setEnableSaveButton(
       !Boolean(
@@ -82,12 +83,7 @@ export const Students = () => {
 
   return (
     <>
-      <Dialog
-        open={modalIsOpen}
-        onClose={closeModal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={modalIsOpen} onClose={closeModal}>
         <DialogTitle>Add new Student</DialogTitle>
         <DialogContent>
           <ContentModal />
@@ -115,6 +111,7 @@ export const Students = () => {
           )}
         </DialogActions>
       </Dialog>
+
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openLoading}
@@ -137,6 +134,7 @@ export const Students = () => {
           {students.map((student) => (
             <CardComponent
               key={student.id}
+              id={student.id}
               photoURL={student.photo}
               name={student.name}
               birthDate={student.birth_data}
