@@ -4,7 +4,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Paper from "@mui/material/Paper";
 import Pagination from "@mui/material/Pagination";
 import AddIcon from "@mui/icons-material/Add";
 import Backdrop from "@mui/material/Backdrop";
@@ -21,30 +20,26 @@ import * as Style from "./style";
 
 export const Students = () => {
   const {
-    getStudents,
-    name,
-    handleName,
-    cpf,
-    handleCPF,
-    rg,
-    handleRG,
-    email,
-    handleEmail,
-    phone,
-    handlePhone,
-    birthDate,
-    handleBirthDate,
-    image,
-    handleImage,
     saveStudent,
-    errorsInputs,
+    getStudents,
     loadingButtonSave,
     modalIsOpen,
     closeModal,
     openModal,
   } = useStudents();
 
-  const { students, page, totalStudents } = useStudentContext();
+  const {
+    students,
+    page,
+    totalStudents,
+    name,
+    cpf,
+    rg,
+    email,
+    birthDate,
+    phone,
+    image,
+  } = useStudentContext();
 
   useEffect(() => {
     getStudents();
@@ -95,22 +90,7 @@ export const Students = () => {
       >
         <DialogTitle>Add new Student</DialogTitle>
         <DialogContent>
-          <ContentModal
-            name={name}
-            handleName={handleName}
-            cpf={cpf}
-            handleCPF={handleCPF}
-            rg={rg}
-            handleRG={handleRG}
-            email={email}
-            handleEmail={handleEmail}
-            phone={phone}
-            handlePhone={handlePhone}
-            birthDate={birthDate}
-            handleBirthDate={handleBirthDate}
-            handleImage={handleImage}
-            image={image}
-          />
+          <ContentModal />
         </DialogContent>
         <DialogActions>
           <Button onClick={closeModal}>Close</Button>

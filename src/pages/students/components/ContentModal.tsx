@@ -22,27 +22,28 @@ type ContentModalProps = {
   handlePhone(event: ChangeEvent<HTMLInputElement>): void;
   birthDate: Date;
   handleBirthDate(event: Date | null): void;
-  handleImage(files: FileList | null ): void 
-  image: File
+  handleImage(files: FileList | null): void;
+  image: File;
 };
 
-export const ContentModal = ({
-  name,
-  handleName,
-  handleCPF,
-  cpf,
-  handleRG,
-  rg,
-  email,
-  handleEmail,
-  phone,
-  handlePhone,
-  birthDate,
-  handleBirthDate,
-  handleImage,
-  image,
-}: ContentModalProps) => {
-  const { errorsInputs } = useStudentContext();
+export const ContentModal = () => {
+  const {
+    errorsInputs,
+    name,
+    handleName,
+    cpf,
+    handleCPF,
+    rg,
+    handleRG,
+    email,
+    handleEmail,
+    birthDate,
+    handleBirthDate,
+    phone,
+    handlePhone,
+    image,
+    handleImage,
+  } = useStudentContext();
 
   return (
     <Style.FORM>
@@ -89,11 +90,11 @@ export const ContentModal = ({
         <Grid xs={12}>
           <FormControl fullWidth>
             <TextField
-              value={email}
-              onChange={handleEmail}
               label="Email"
               type="email"
               variant="outlined"
+              value={email}
+              onChange={handleEmail}
               error={errorsInputs.email && Boolean(errorsInputs.email.length)}
               helperText={errorsInputs.email && errorsInputs.email[0]}
             />

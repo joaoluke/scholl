@@ -6,17 +6,12 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Chip from "@mui/material/Chip";
 import CakeIcon from "@mui/icons-material/Cake";
@@ -25,8 +20,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PhoneIcon from "@mui/icons-material/Phone";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
+import { useStudentContext } from "../../contexts/Student";
 import { CardProps } from "../../types";
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -61,20 +56,11 @@ export const CardComponent = ({
 
   const [open, setOpen] = useState(true);
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
   return (
     <Card
       sx={{ width: 250, margin: 3, height: expanded ? "auto" : "fit-content" }}
     >
-      <CardMedia
-        component="img"
-        height="250"
-        image={photoURL}
-        alt="Paella dish"
-      />
+      <CardMedia component="img" height="250" image={photoURL} />
       <CardContent>
         <Chip
           icon={<CakeIcon color="primary" />}
@@ -86,8 +72,8 @@ export const CardComponent = ({
           {name}
         </Typography>
 
-        <Badge >
-          <MailIcon color="action" sx={{ marginRight: 1 }}/>
+        <Badge>
+          <MailIcon color="action" sx={{ marginRight: 1 }} />
           <Typography variant="caption" display="block">
             {email}
           </Typography>

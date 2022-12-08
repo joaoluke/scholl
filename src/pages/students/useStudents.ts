@@ -15,33 +15,26 @@ export default () => {
     errorsInputs,
     resetInputErrors,
     handleStudents,
+    name,
+    cpf,
+    rg,
+    email,
+    birthDate,
+    phone,
+    image,
   } = useStudentContext();
   const { handleOpenAlertSuccess } = useAlertsContext();
 
   const [studentsData, setStudentsData] = useState<StudentProps[]>([]);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
-  const [cpf, setCPF] = useState<string>("");
-  const [rg, setRG] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [birthDate, setBirthDate] = useState<Date>(new Date());
-  const [phone, setPhone] = useState<string>("");
-  const [image, setImage] = useState<any>("");
   const [loadingButtonSave, setLoadingButtonSave] = useState<boolean>(false);
 
   const [totalStudents, setTotalStudents] = useState<any>("");
   const [page, setPage] = useState<any>(1);
 
-  const checkEmptyInput = () => () =>
-    Boolean(
-      name.length &&
-        cpf.length &&
-        rg.length &&
-        email.length &&
-        birthDate &&
-        phone.length &&
-        image.length
-    );
+  const getStudent = async (id: number) => {
+    const response = await API.get(`students/${id}`);
+  };
 
   const getStudents = async (search = "", pageNumber = 1) => {
     setPage(pageNumber);
@@ -49,10 +42,6 @@ export default () => {
     setStudentsData(response.results);
     handleStudents(response.results);
     setTotalStudents(response.count);
-  };
-
-  const getStudent = async (id: number) => {
-    const response = await API.get(`students/${id}`);
   };
 
   const saveStudent = async () => {
@@ -80,40 +69,6 @@ export default () => {
     }
   };
 
-  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleCPF = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length <= 14) {
-      setCPF(formatCPF(event.target.value));
-    }
-  };
-
-  const handleRG = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length <= 12) {
-      setRG(formattedRG(event.target.value));
-    }
-  };
-
-  const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const handleBirthDate = (date: Date) => {
-    setBirthDate(date);
-  };
-
-  const handlePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length <= 12) {
-      setPhone(formatPhone(event.target.value));
-    }
-  };
-
-  const handleImage = (files: FileList) => {
-    setImage(files[0]);
-  };
-
   const closeModal = () => {
     setModalIsOpen(false);
   };
@@ -123,21 +78,6 @@ export default () => {
   };
 
   return {
-    name,
-    handleName,
-    cpf,
-    handleCPF,
-    rg,
-    handleRG,
-    email,
-    handleEmail,
-    phone,
-    handlePhone,
-    birthDate,
-    handleBirthDate,
-    image,
-    handleImage,
-    getStudents,
     closeModal,
     openModal,
     studentsData,
@@ -145,7 +85,7 @@ export default () => {
     saveStudent,
     totalStudents,
     page,
-    checkEmptyInput,
+    getStudents,
     errorsInputs,
     loadingButtonSave,
   };

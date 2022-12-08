@@ -1,6 +1,14 @@
-import { createContext, useState, useContext, ReactNode } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  ChangeEvent,
+} from "react";
+
 import { API } from "../services/connection";
 import { StudentProps, StudentResponse } from "../types";
+import { formatCPF, formatPhone, formattedRG } from "../utils";
 
 interface Errors {
   rg?: String[];
@@ -14,8 +22,22 @@ interface StudentContextData {
   students: StudentProps[];
   page: number;
   totalStudents: number;
-  handleStudents: any;
   errorsInputs: Errors;
+  name: string;
+  cpf: string;
+  rg: string;
+  email: string;
+  birthDate: Date;
+  phone: string;
+  image: any;
+  handleName(event: ChangeEvent<HTMLInputElement>): void;
+  handleCPF(event: ChangeEvent<HTMLInputElement>): void;
+  handleRG(event: ChangeEvent<HTMLInputElement>): void;
+  handleEmail(event: ChangeEvent<HTMLInputElement>): void;
+  handleBirthDate(date: Date | null): void;
+  handlePhone(event: ChangeEvent<HTMLInputElement>): void;
+  handleImage(files: FileList): void;
+  handleStudents(value: StudentProps[]): void;
   handleInputErrors(errors: Errors): void;
   resetInputErrors(): void;
   getStudentsContext(search: string, page: number): Promise<StudentResponse>;
@@ -40,6 +62,47 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
   const [errorsInputs, setErrorsInputs] = useState<Errors>(errorInInputs);
   const [page, setPage] = useState<number>(1);
   const [totalStudents, setTotalStudents] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+  const [cpf, setCPF] = useState<string>("");
+  const [rg, setRG] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [birthDate, setBirthDate] = useState<Date>(new Date());
+  const [phone, setPhone] = useState<string>("");
+  const [image, setImage] = useState<any>("");
+
+  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  const handleCPF = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length <= 14) {
+      setCPF(formatCPF(event.target.value));
+    }
+  };
+
+  const handleRG = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length <= 12) {
+      setRG(formattedRG(event.target.value));
+    }
+  };
+
+  const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handleBirthDate = (date: Date) => {
+    setBirthDate(date);
+  };
+
+  const handlePhone = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length <= 12) {
+      setPhone(formatPhone(event.target.value));
+    }
+  };
+
+  const handleImage = (files: FileList) => {
+    setImage(files[0]);
+  };
 
   const handleInputErrors = (errors: Errors) => {
     setErrorsInputs(errors);
@@ -69,6 +132,13 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
   return (
     <StudentContext.Provider
       value={{
+        name,
+        cpf,
+        rg,
+        email,
+        birthDate,
+        phone,
+        image,
         students,
         page,
         totalStudents,
@@ -77,6 +147,13 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
         resetInputErrors,
         errorsInputs,
         getStudentsContext,
+        handleName,
+        handleCPF,
+        handleRG,
+        handleEmail,
+        handleBirthDate,
+        handlePhone,
+        handleImage
       }}
     >
       {children}
