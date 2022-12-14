@@ -27,7 +27,7 @@ function App() {
 
       <Header></Header>
       <Routes>
-        <Route path="/" element={<Students />} />
+        <Route path="/students" element={<Students />} />
       </Routes>
     </div>
   );
