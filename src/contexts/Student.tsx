@@ -40,7 +40,7 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
   const [email, setEmail] = useState<string>("");
   const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [phone, setPhone] = useState<string>("");
-  const [image, setImage] = useState<File>([]);
+  const [image, setImage] = useState<any>('');
 
   const resetInputs = () => {
     setName('')
@@ -49,7 +49,6 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
     setEmail('')
     setBirthDate(new Date())
     setPhone('')
-    setImage('')
   }
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
@@ -145,6 +144,7 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
       await API.post("students/", formData);
       closeModal();
       resetInputErrors();
+      resetInputs()
       handleOpenAlertSuccess("Student successfully saved!");
     } catch (error) {
       if (request.isAxiosError(error) && error.response) {
