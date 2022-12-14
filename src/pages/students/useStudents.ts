@@ -56,7 +56,7 @@ export default () => {
     formData.append("photo", image);
 
     try {
-      const response = await API.post("students/", formData);
+      await API.post("students/", formData);
       closeModal();
       resetInputErrors();
       handleOpenAlertSuccess("Student successfully saved!");

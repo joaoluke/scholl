@@ -6,4 +6,5 @@ export type CardProps = {
   email: string;
   cpf: string;
   rg: string;
+  id: string;
 };

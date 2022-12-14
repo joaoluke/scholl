@@ -10,6 +10,7 @@ import axios from "axios";
 import { API } from "../services/connection";
 import { StudentProps, Errors, StudentContextData } from "../types";
 import { formatCPF, formatPhone, formattedRG } from "../utils";
+import { useAlertsContext } from "./Alerts";
 
 type PropsStudentProviders = {
   children: ReactNode;
@@ -26,6 +27,8 @@ const errorInInputs = {
 };
 
 const StudentContextProvider = ({ children }: PropsStudentProviders) => {
+  const { handleOpenAlertError, handleOpenAlertSuccess } = useAlertsContext();
+
   const [students, setStudents] = useState<StudentProps[]>([]);
   const [errorsInputs, setErrorsInputs] = useState<Errors>(errorInInputs);
   const [page, setPage] = useState<number>(1);
@@ -37,6 +40,15 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
   const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [phone, setPhone] = useState<string>("");
   const [image, setImage] = useState<any>("");
+
+  const [loadingButton, setLoadingButton] = useState<boolean>(false);
+
+  const [openModalConfirmationDelete, setOpenModalConfirmationDelete] =
+    useState<number>(-1);
+
+  const changeModalConfirmationDelete = (value: number) => {
+    setOpenModalConfirmationDelete(value);
+  };
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -97,18 +109,18 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
     return response.data;
   };
 
-  const options = {
-    method: "DELETE",
-    // headers: {
-    //   "Content-Type": "application/json",
-    //   "Access-Control-Allow-Origin": "*",
-    //   "Access-Control-Allow-Headers": "*",
-    //   "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-    // },
-  };
-
   const deleteStudent = async (id: string) => {
-    await axios.delete(`http://localhost:8000/students/${id}/`);
+    try {
+      setLoadingButton(true);
+      await API.delete(`students/${id}/`);
+      handleOpenAlertSuccess("Student removed successfully");
+      await getStudentsContext('', page);
+    } catch (err) {
+      handleOpenAlertError("Error deleting student");
+    } finally {
+      setLoadingButton(false);
+      setOpenModalConfirmationDelete(-1);
+    }
   };
 
   return (
@@ -123,7 +135,9 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
         image,
         students,
         page,
+        loadingButton,
         totalStudents,
+        openModalConfirmationDelete,
         handleStudents,
         handleInputErrors,
         resetInputErrors,
@@ -137,6 +151,7 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
         handlePhone,
         handleImage,
         deleteStudent,
+        changeModalConfirmationDelete,
       }}
     >
       {children}

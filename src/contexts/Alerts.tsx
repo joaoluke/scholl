@@ -3,7 +3,9 @@ import { createContext, useState, useContext, ReactNode } from "react";
 interface AlertsContextData {
   openAlertSuccess: boolean;
   messageAlertSuccess: string;
+  typeAlert: 'success' | 'error';
   handleOpenAlertSuccess(message: string): void;
+  handleOpenAlertError(message: string): void;
   handleCloseAlertSuccess(
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -19,10 +21,19 @@ const AlertsContext = createContext({} as AlertsContextData);
 const AlertsContextProvider = ({ children }: PropsAlertsProviders) => {
   const [openAlertSuccess, setOpenAlertSuccess] = useState<boolean>(false);
   const [messageAlertSuccess, setMessageAlertSuccess] = useState<string>("");
+  const [typeAlert, setTypeAlert] = useState<"success" | "error">('success')
 
   const handleOpenAlertSuccess = (message: string) => {
-    setOpenAlertSuccess(true);
+    setTypeAlert('success')
     setMessageAlertSuccess(message);
+    setOpenAlertSuccess(true);
+  };
+
+  const handleOpenAlertError = (message: string) => {
+    setTypeAlert('error')
+    setMessageAlertSuccess(message);
+    setOpenAlertSuccess(true);
+
   };
 
   const handleCloseAlertSuccess = (
@@ -40,6 +51,8 @@ const AlertsContextProvider = ({ children }: PropsAlertsProviders) => {
   return (
     <AlertsContext.Provider
       value={{
+        typeAlert,
+        handleOpenAlertError,
         handleOpenAlertSuccess,
         handleCloseAlertSuccess,
         openAlertSuccess,

@@ -57,47 +57,57 @@ export const CardComponent = ({
   rg,
   id,
 }: CardProps) => {
-  const { deleteStudent } = useStudentContext();
+  const {
+    deleteStudent,
+    loadingButton,
+    openModalConfirmationDelete,
+    changeModalConfirmationDelete,
+  } = useStudentContext();
   const [expanded, setExpanded] = useState(false);
-  const [openModalConfirmation, setOpenModalConfirmation] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const [open, setOpen] = useState(true);
-
   return (
     <>
-      <Dialog
-        open={openModalConfirmation}
-        onClose={() => setOpenModalConfirmation(false)}
-      >
-        <DialogTitle>Delete Student</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenModalConfirmation(false)}>Close</Button>
-          {false ? (
-            <LoadingButton
-              loading
-              loadingPosition="start"
-              startIcon={<SaveIcon />}
-              variant="outlined"
-            >
-              Save
-            </LoadingButton>
-          ) : (
-            <Button onClick={() => deleteStudent(id)} autoFocus variant="contained">
-              Save
+ 
+        <Dialog
+          open={openModalConfirmationDelete === Number(id)}
+          onClose={() => changeModalConfirmationDelete(-1)}
+        >
+          <DialogTitle>Delete Student</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to remove this student? This action cannot
+              be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => changeModalConfirmationDelete(-1)}>
+              Close
             </Button>
-          )}
-        </DialogActions>
-      </Dialog>
+            {loadingButton ? (
+              <LoadingButton
+                loading
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="outlined"
+              >
+                Delete
+              </LoadingButton>
+            ) : (
+              <Button
+                onClick={() => deleteStudent(id)}
+                autoFocus
+                variant="contained"
+              >
+                Delete
+              </Button>
+            )}
+          </DialogActions>
+        </Dialog>
+
       <Card
         sx={{
           width: 250,
@@ -127,7 +137,7 @@ export const CardComponent = ({
         <CardActions disableSpacing>
           <IconButton>
             <DeleteIcon
-              onClick={() => setOpenModalConfirmation(true)}
+              onClick={() => changeModalConfirmationDelete(Number(id))}
               color="primary"
             />
           </IconButton>

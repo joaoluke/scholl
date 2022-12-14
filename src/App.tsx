@@ -7,8 +7,10 @@ import { Students } from "./pages";
 import { useAlertsContext } from "./contexts/Alerts";
 
 function App() {
-  const { openAlertSuccess, messageAlertSuccess, handleCloseAlertSuccess } =
+  const { openAlertSuccess, messageAlertSuccess, handleCloseAlertSuccess, typeAlert } =
     useAlertsContext();
+
+  console.log(openAlertSuccess)
 
   return (
     <div className="App">
@@ -18,7 +20,7 @@ function App() {
         autoHideDuration={6000}
         onClose={handleCloseAlertSuccess}
       >
-        <Alert onClose={handleCloseAlertSuccess} severity="success" sx={{ width: "100%" }}>
+        <Alert onClose={handleCloseAlertSuccess} severity={typeAlert} sx={{ width: "100%" }}>
           {messageAlertSuccess}
         </Alert>
       </Snackbar>
