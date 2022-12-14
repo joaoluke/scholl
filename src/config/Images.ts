@@ -1,3 +1,3 @@
-import LOGO from "../assets/logo.png";
+import WHITE_LOGO from "../assets/white-logo.svg";
 
-export { LOGO };
+export { WHITE_LOGO };
