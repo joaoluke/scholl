@@ -24,6 +24,10 @@ export type StudentContextData = {
   image: any;
   loadingButton: boolean;
   openModalConfirmationDelete: number;
+  modalIsOpen: boolean;
+  saveStudent(): void;
+  openModal(): void;
+  closeModal(): void;
   handleName(event: ChangeEvent<HTMLInputElement>): void;
   handleCPF(event: ChangeEvent<HTMLInputElement>): void;
   handleRG(event: ChangeEvent<HTMLInputElement>): void;

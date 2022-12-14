@@ -5,7 +5,8 @@ import {
   ReactNode,
   ChangeEvent,
 } from "react";
-import axios from "axios";
+import { format } from "date-fns";
+import request from "axios";
 
 import { API } from "../services/connection";
 import { StudentProps, Errors, StudentContextData } from "../types";
@@ -39,7 +40,27 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
   const [email, setEmail] = useState<string>("");
   const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [phone, setPhone] = useState<string>("");
-  const [image, setImage] = useState<any>("");
+  const [image, setImage] = useState<File>([]);
+
+  const resetInputs = () => {
+    setName('')
+    setCPF('')
+    setRG('')
+    setEmail('')
+    setBirthDate(new Date())
+    setPhone('')
+    setImage('')
+  }
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
 
   const [loadingButton, setLoadingButton] = useState<boolean>(false);
 
@@ -109,6 +130,33 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
     return response.data;
   };
 
+  const saveStudent = async () => {
+    setLoadingButton(true);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("cpf", cpf);
+    formData.append("rg", rg);
+    formData.append("email", email);
+    formData.append("birth_data", format(birthDate, "yyyy-MM-dd"));
+    formData.append("phone", phone);
+    formData.append("photo", image);
+
+    try {
+      await API.post("students/", formData);
+      closeModal();
+      resetInputErrors();
+      handleOpenAlertSuccess("Student successfully saved!");
+    } catch (error) {
+      if (request.isAxiosError(error) && error.response) {
+        handleInputErrors(error.response?.data);
+      } else {
+        handleOpenAlertError("Error saving student");
+      }
+    } finally {
+      setLoadingButton(false);
+    }
+  };
+
   const deleteStudent = async (id: string) => {
     try {
       setLoadingButton(true);
@@ -135,6 +183,9 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
         image,
         students,
         page,
+        modalIsOpen,
+        closeModal,
+        openModal,
         loadingButton,
         totalStudents,
         openModalConfirmationDelete,
@@ -143,6 +194,7 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
         resetInputErrors,
         errorsInputs,
         getStudentsContext,
+        saveStudent,
         handleName,
         handleCPF,
         handleRG,

@@ -19,14 +19,7 @@ import useStudents from "./useStudents";
 import * as Style from "./style";
 
 export const Students = () => {
-  const {
-    saveStudent,
-    getStudents,
-    loadingButtonSave,
-    modalIsOpen,
-    closeModal,
-    openModal,
-  } = useStudents();
+  const { getStudents } = useStudents();
 
   const {
     students,
@@ -39,6 +32,11 @@ export const Students = () => {
     birthDate,
     phone,
     image,
+    modalIsOpen,
+    openModal,
+    closeModal,
+    saveStudent,
+    loadingButton
   } = useStudentContext();
 
   useEffect(() => {
@@ -89,7 +87,7 @@ export const Students = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={closeModal}>Close</Button>
-          {loadingButtonSave ? (
+          {loadingButton ? (
             <LoadingButton
               loading
               loadingPosition="start"
