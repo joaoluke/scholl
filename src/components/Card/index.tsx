@@ -71,43 +71,41 @@ export const CardComponent = ({
 
   return (
     <>
- 
-        <Dialog
-          open={openModalConfirmationDelete === Number(id)}
-          onClose={() => changeModalConfirmationDelete(-1)}
-        >
-          <DialogTitle>Delete Student</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to remove this student? This action cannot
-              be undone.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => changeModalConfirmationDelete(-1)}>
-              Close
+      <Dialog
+        open={openModalConfirmationDelete === Number(id)}
+        onClose={() => changeModalConfirmationDelete(-1)}
+      >
+        <DialogTitle>Delete Student</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to remove this student? This action cannot be
+            undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => changeModalConfirmationDelete(-1)}>
+            Close
+          </Button>
+          {loadingButton ? (
+            <LoadingButton
+              loading
+              loadingPosition="start"
+              startIcon={<SaveIcon />}
+              variant="outlined"
+            >
+              Delete
+            </LoadingButton>
+          ) : (
+            <Button
+              onClick={() => deleteStudent(id)}
+              autoFocus
+              variant="contained"
+            >
+              Delete
             </Button>
-            {loadingButton ? (
-              <LoadingButton
-                loading
-                loadingPosition="start"
-                startIcon={<SaveIcon />}
-                variant="outlined"
-              >
-                Delete
-              </LoadingButton>
-            ) : (
-              <Button
-                onClick={() => deleteStudent(id)}
-                autoFocus
-                variant="contained"
-              >
-                Delete
-              </Button>
-            )}
-          </DialogActions>
-        </Dialog>
-
+          )}
+        </DialogActions>
+      </Dialog>
       <Card
         sx={{
           width: 250,
@@ -135,13 +133,10 @@ export const CardComponent = ({
           </Badge>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton>
-            <DeleteIcon
-              onClick={() => changeModalConfirmationDelete(Number(id))}
-              color="primary"
-            />
+          <IconButton onClick={() => changeModalConfirmationDelete(Number(id))}>
+            <DeleteIcon color="primary" />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => changeModalConfirmationDelete(Number(id))}>
             <EditIcon color="primary" />
           </IconButton>
           <ExpandMore

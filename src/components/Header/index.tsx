@@ -59,7 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const pages = ["Home", "Students", "Curses", "Registrations"];
+const pages = ["Home", "Students", "Courses", "Registrations"];
 
 export const Header = () => {
   const { getStudentsContext } = useStudentContext();
@@ -133,8 +133,8 @@ export const Header = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <Link to={`/${page.toLowerCase()}`}>
+              {pages.map((page, index) => (
+                <Link key={index} to={`/${page.toLowerCase()}`}>
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
@@ -162,8 +162,12 @@ export const Header = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Link to={`/${page.toLowerCase()}`} style={{ textDecoration: 'none' }}>
+            {pages.map((page, index) => (
+              <Link
+                key={index}
+                to={`/${page.toLowerCase()}`}
+                style={{ textDecoration: "none" }}
+              >
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}

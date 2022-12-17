@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 
 import { Header, Alert } from "./components";
-import { Students } from "./pages";
+import { Students, Courses } from "./pages";
 import { useAlertsContext } from "./contexts/Alerts";
 
 function App() {
@@ -25,9 +24,10 @@ function App() {
         </Alert>
       </Snackbar>
 
-      <Header></Header>
+      <Header />
       <Routes>
         <Route path="/students" element={<Students />} />
+        <Route path="/courses" element={<Courses />} />
       </Routes>
     </div>
   );
