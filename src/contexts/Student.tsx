@@ -40,16 +40,16 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
   const [email, setEmail] = useState<string>("");
   const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [phone, setPhone] = useState<string>("");
-  const [image, setImage] = useState<any>('');
+  const [image, setImage] = useState<any>("");
 
   const resetInputs = () => {
-    setName('')
-    setCPF('')
-    setRG('')
-    setEmail('')
-    setBirthDate(new Date())
-    setPhone('')
-  }
+    setName("");
+    setCPF("");
+    setRG("");
+    setEmail("");
+    setBirthDate(new Date());
+    setPhone("");
+  };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
@@ -144,7 +144,7 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
       await API.post("students/", formData);
       closeModal();
       resetInputErrors();
-      resetInputs()
+      resetInputs();
       handleOpenAlertSuccess("Student successfully saved!");
     } catch (error) {
       if (request.isAxiosError(error) && error.response) {
@@ -162,7 +162,7 @@ const StudentContextProvider = ({ children }: PropsStudentProviders) => {
       setLoadingButton(true);
       await API.delete(`students/${id}/`);
       handleOpenAlertSuccess("Student removed successfully");
-      await getStudentsContext('', page);
+      await getStudentsContext("", page);
     } catch (err) {
       handleOpenAlertError("Error deleting student");
     } finally {
