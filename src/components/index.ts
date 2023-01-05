@@ -1,4 +1,4 @@
-export * from "./Card";
+export * from "./CardStudent";
 export * from "./Header";
 export * from "./Button";
 export * from "./UploaderFile"
