@@ -175,7 +175,7 @@ export const CardComponent = ({
             </List>
           </CardContent>
         </Collapse>
-      </Card>{" "}
+      </Card>
     </>
   );
 };
