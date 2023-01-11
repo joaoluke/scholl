@@ -13,7 +13,7 @@ export const CardCoursesComponent = ({
 }) => {
   console.log("course")
   return (
-    <Card sx={{ width: 345 }}>
+    <Card sx={{ width: 345, margin: 3, }}>
       <CardMedia
         sx={{ height: 140 }}
         image={photo}
