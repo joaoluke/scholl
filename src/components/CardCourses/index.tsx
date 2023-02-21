@@ -5,20 +5,18 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
+import { CardCoursesProps } from "../../types";
+
 export const CardCoursesComponent = ({
   photo,
   description,
   name,
-  code
-}) => {
-  console.log("course")
+  code,
+}: CardCoursesProps) => {
+  console.log("course");
   return (
-    <Card sx={{ width: 345, margin: 3, }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image={photo}
-        title="green iguana"
-      />
+    <Card sx={{ width: 345, margin: 3 }}>
+      <CardMedia sx={{ height: 140 }} image={photo} title="green iguana" />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {name}
